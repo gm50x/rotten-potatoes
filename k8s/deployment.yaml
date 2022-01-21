@@ -1,3 +1,13 @@
+# Shared Secrets HARDCODED, Don't do this in PROD please! :D
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mongodb-credentials
+stringData:
+  username: "user4mongo"
+  password: "pwd4mongo"
+type: Opaque
+---
 # MongoDB Deployment and Service
 apiVersion: apps/v1
 kind: Deployment
@@ -19,9 +29,15 @@ spec:
             - containerPort: 27017
           env:
             - name: MONGO_INITDB_ROOT_USERNAME
-              value: mongouser
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-credentials
+                  key: username
             - name: MONGO_INITDB_ROOT_PASSWORD
-              value: pwd4mongo
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-credentials
+                  key: password
           resources:
             requests:
               cpu: "500m"
@@ -68,9 +84,15 @@ spec:
             - name: MONGODB_PORT
               value: "27017"
             - name: MONGODB_USERNAME
-              value: mongouser
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-credentials
+                  key: username
             - name: MONGODB_PASSWORD
-              value: pwd4mongo
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-credentials
+                  key: password
           resources:
             requests:
               cpu: "500m"
@@ -87,8 +109,7 @@ spec:
   selector:
     app: rotten-potatoes
   ports:
-    - port: 80
+    - appProtocol: TCP
+      port: 8080
       targetPort: 5000
-      appProtocol: TCP
-      nodePort: 30000
-  type: NodePort
+  type: LoadBalancer
