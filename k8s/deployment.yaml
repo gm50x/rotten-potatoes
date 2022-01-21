@@ -40,11 +40,11 @@ spec:
                   key: password
           resources:
             requests:
-              cpu: "500m"
-              memory: "500M"
+              cpu: "100m"
+              memory: "300M"
             limits:
-              cpu: "500m"
-              memory: "500M"
+              cpu: "100m"
+              memory: "300M"
 ---
 apiVersion: v1
 kind: Service
@@ -95,11 +95,11 @@ spec:
                   key: password
           resources:
             requests:
-              cpu: "500m"
-              memory: "500M"
+              cpu: "50m"
+              memory: "100M"
             limits:
-              cpu: "500m"
-              memory: "500M"
+              cpu: "50m"
+              memory: "100M"
 ---
 apiVersion: v1
 kind: Service
